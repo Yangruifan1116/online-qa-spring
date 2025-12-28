@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${topic.title}"></title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #4a90e2;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #f0f7ff;
+        }
+
+        .topic-content {
+            border: 1px solid #e1e5eb;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 30px;
+            background-color: #f9fafb;
+        }
+
+        .topic-meta {
+            color: #666;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .topic-meta strong {
+            color: #555;
+        }
+
+        .topic-body {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .reply-list {
+            margin-bottom: 30px;
+        }
+
+        .reply-item {
+            border: 1px solid #eaeaea;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9fafb;
+        }
+
+        .reply-meta {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .reply-meta strong {
+            color: #4a90e2;
+        }
+
+        .reply-body {
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .empty-replies {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .reply-form-container {
+            border-top: 1px solid #eee;
+            padding-top: 25px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        textarea:focus {
+            border-color: #4a90e2;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        input[type="submit"] {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3a7bc8;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .login-prompt a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="${topic.title}"></h2>
+    <a th:href="@{/topics}" class="back-link">← 返回列表</a>
+
+    <div class="topic-content">
+        <div class="topic-meta">
+            <strong>作者:</strong> <span th:text="${topic.author}"></span> |
+            <strong>时间:</strong> <span th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+        </div>
+        <div class="topic-body" th:text="${topic.content}"></div>
+    </div>
+
+    <h3>回复</h3>
+
+    <div class="reply-list">
+        <div th:each="reply : ${topic.replies}" class="reply-item">
+            <div class="reply-meta">
+                <strong th:text="${reply.author}"></strong> 于
+                <span th:text="${#dates.format(reply.createTime, 'yyyy-MM-dd HH:mm')}"></span> 回复:
+            </div>
+            <div class="reply-body" th:text="${reply.content}"></div>
+        </div>
+
+        <div th:if="${topic.replies == null or topic.replies.isEmpty()}" class="empty-replies">
+            暂无回复
+        </div>
+    </div>
+
+    <div th:if="${session.user != null}" class="reply-form-container">
+        <h3>发表回复</h3>
+        <form th:action="@{/reply}" method="post">
+            <input type="hidden" name="topicId" th:value="${topic.id}">
+            <textarea name="content" placeholder="请输入回复内容" required></textarea>
+            <br>
+            <input type="submit" value="提交回复">
+        </form>
+    </div>
+
+    <div th:if="${session.user == null}" class="login-prompt">
+        <a th:href="@{/login}">登录</a>后可以回复
+    </div>
+</div>
+</body>
+</html>

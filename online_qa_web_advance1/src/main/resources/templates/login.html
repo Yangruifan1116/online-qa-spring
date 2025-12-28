@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .error-message {
+            background-color: #ffeaea;
+            color: #d32f2f;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px 5px;
+        }
+
+        td:first-child {
+            width: 30%;
+            text-align: right;
+            padding-right: 10px;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4a90e2;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .captcha-image {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .refresh-link {
+            color: #4a90e2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .refresh-link:hover {
+            text-decoration: underline;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3a7bc8;
+        }
+
+        .guest-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .guest-link:hover {
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>用户登录</h2>
+
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+    <form th:action="@{/login}" method="post">
+        <table>
+            <tr>
+                <td>用户名:</td>
+                <td><input type="text" name="username" required placeholder="请输入用户名"></td>
+            </tr>
+            <tr>
+                <td>验证码:</td>
+                <td>
+                    <div class="captcha-container">
+                        <img th:src="@{/login(type='captcha')}" alt="验证码" class="captcha-image">
+                        <a th:href="@{/login}" class="refresh-link">刷新验证码</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>输入验证码:</td>
+                <td><input type="text" name="captcha" required maxlength="4" placeholder="请输入验证码"></td>
+            </tr>
+        </table>
+
+        <div class="button-container">
+            <input type="submit" value="登录">
+            <a th:href="@{/topics}" class="guest-link">直接进入讨论区</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: org.example.online_qa_web_advance1.OnlineQaWebAdvance1Applic
+ ation
+

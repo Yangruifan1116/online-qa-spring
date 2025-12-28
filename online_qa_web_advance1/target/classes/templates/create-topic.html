@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>创建新话题</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #4a90e2;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #f0f7ff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 12px 5px;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            width: 15%;
+            text-align: right;
+            padding-right: 15px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: #4a90e2;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 200px;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        input[type="submit"] {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-right: 15px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3a7bc8;
+        }
+
+        .cancel-link {
+            color: #666;
+            text-decoration: none;
+            padding: 9px 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .cancel-link:hover {
+            background-color: #f5f5f5;
+            border-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>创建新讨论话题</h2>
+    <a th:href="@{/topics}" class="back-link">← 返回列表</a>
+
+    <form th:action="@{/topics}" method="post">
+        <table>
+            <tr>
+                <td>标题:</td>
+                <td><input type="text" name="title" required placeholder="请输入话题标题"></td>
+            </tr>
+            <tr>
+                <td>内容:</td>
+                <td><textarea name="content" required placeholder="请输入话题内容"></textarea></td>
+            </tr>
+        </table>
+
+        <div class="form-actions">
+            <input type="submit" value="创建">
+            <a th:href="@{/topics}" class="cancel-link">取消</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
